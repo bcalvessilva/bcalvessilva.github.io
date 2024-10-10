@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Mobile-Friendly</title>
+    <style>
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="meuCanvas"></canvas>
+    <script>
+      var canvas = document.getElementById("meuCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // Verifica se o usuário está em um dispositivo móvel
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      ajustarCanvas();
+      window.addEventListener("resize", ajustarCanvas);
+
+      if (isMobile) {
+        // Funcionalidades exclusivas para dispositivos móveis
+        canvas.addEventListener("touchstart", desenharComToque);
+        alert("Você está usando um dispositivo móvel!");
+      } else {
+        // Funcionalidades para desktops
+        canvas.addEventListener("click", desenharComClique);
+        alert("Você está em um desktop!");
+      }
+
+      function ajustarCanvas() {
+        // Ajuste para alta densidade de pixels em dispositivos móveis
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        ctx.scale(dpr, dpr);
+
+        // Exemplo de desenho no canvas
+        desenharCanvas();
+      }
+
+      function desenharCanvas() {
+        ctx.fillStyle = "lightblue";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "darkblue";
+        ctx.font = "40px Arial";
+        ctx.fillText("Canvas Mobile-Friendly", 50, 50);
+      }
+
+      // Evento para toque em dispositivos móveis
+      function desenharComToque(event) {
+        var touch = event.touches[0];
+        var x = touch.clientX;
+        var y = touch.clientY;
+        desenharCírculo(x, y);
+      }
+
+      // Evento para clique em desktops
+      function desenharComClique(event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        desenharCírculo(x, y);
+      }
+
+      function desenharCírculo(x, y) {
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    </script>
+  </body>
+</html>
