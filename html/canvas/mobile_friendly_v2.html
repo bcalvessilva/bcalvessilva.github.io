@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canvas Mobile-Friendly Melhorado</title>
+  <title>Canvas Mobile-Friendly Melhorado com Toque</title>
   <style>
     body, html {
       margin: 0;
@@ -59,6 +59,29 @@
       clearTimeout(debounceResize);
       debounceResize = setTimeout(ajustarCanvas, 100);  // Ajusta o canvas 100ms após o redimensionamento
     });
+
+    // Evento de toque para dispositivos móveis
+    canvas.addEventListener('touchstart', function(event) {
+      var touch = event.touches[0];  // Obtém a primeira posição do toque
+      var x = touch.clientX;
+      var y = touch.clientY;
+      desenharCírculo(x, y);
+    });
+
+    // Evento de clique para desktops
+    canvas.addEventListener('click', function(event) {
+      var x = event.clientX;
+      var y = event.clientY;
+      desenharCírculo(x, y);
+    });
+
+    // Função que desenha um círculo no ponto clicado/tocado
+    function desenharCírculo(x, y) {
+      ctx.fillStyle = 'red';
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
     // Inicializa o ajuste do canvas
     ajustarCanvas();
